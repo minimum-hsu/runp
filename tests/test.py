@@ -3,6 +3,7 @@ from runp import runp
 import os
 import sys
 import unittest
+from io import StringIO
 
 
 class RunPTestCase(unittest.TestCase):
@@ -11,6 +12,11 @@ class RunPTestCase(unittest.TestCase):
         self.runfile = os.path.join(self.test_path, "testfile.py")
         self.imported_vars = runp.load_runfile(self.runfile)
         self.functions = runp.filter_vars(self.imported_vars)
+        self.old_stdout = sys.stdout 
+        sys.stdout = StringIO() 
+
+    def tearDown(self): 
+        sys.stdout = self.old_stdout
 
     def test_load_runfile(self):
         self.assertTrue(len(self.imported_vars) >= len(self.functions))
@@ -21,8 +27,8 @@ class RunPTestCase(unittest.TestCase):
     def test_print_functions(self):
         out = """Available functions:
 Wip.print_it\t
-wat\tWEEE
 wet\t
+wat\tWEEE
 wut\tSuper docstring test"""
         runp.print_functions(self.functions)
         output = sys.stdout.getvalue().strip()
@@ -74,7 +80,7 @@ wut(text, woop=False)
         self.assertEquals(str(output), out)
 
     def test_run_function_wrong_args(self):
-        out = "wut() takes at least 1 argument (0 given)"
+        out = "wut() missing 1 required positional argument: 'text'"
         runp.run_function(self.functions, "wut")
         output = sys.stdout.getvalue().strip()
         self.assertEquals(str(output), out)

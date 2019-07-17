@@ -83,7 +83,7 @@ def get_function(functions, function_name):
 
 def print_functions(functions):
     print("Available functions:")
-    for fname, function in functions.iteritems():
+    for fname, function in functions.items():
         doc = get_docstring(function, abbrv=True)
         print(fname + "\t" + doc)
 
@@ -104,7 +104,7 @@ def run_function(functions, cmd):
         if func:
             func(*args, **kwargs)
     except TypeError as e:
-        print(e.message)
+        print(e)
 
 
 def main():
