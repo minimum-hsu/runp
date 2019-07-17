@@ -17,7 +17,7 @@ def filter_vars(imported_vars):
                 for name, method in methods:
                     if not name.startswith('_'):
                         functions[obj.__name__ + "." + name] = method
-            else:
+            elif inspect.isfunction(obj):
                 functions[obj.__name__] = obj
     return functions
 
@@ -142,3 +142,6 @@ def main():
         print("No function was selected!")
         sys.exit(1)
     run_function(functions, args.function)
+
+if __name__ == '__main__':
+    main()
