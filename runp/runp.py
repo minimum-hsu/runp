@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+from __future__ import print
+
 import os
 import sys
 import argparse
 import inspect
 import pydoc
-from __future__ import print
 
 def filter_vars(imported_vars):
     functions = {}
